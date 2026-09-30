@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Акула — таймер</title>
+<style>
+:root{color-scheme:dark light}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:Arial,sans-serif}body{background:#07131f;color:#fff}.app{min-height:100vh;background:linear-gradient(180deg,#061a2b,#0a2940);display:flex;justify-content:center;padding:24px}.page{width:min(900px,100%);position:relative;display:flex;flex-direction:column;align-items:center}.timer{width:min(620px,94vw);padding:18px 25px;margin:8px auto 22px;border:2px solid #5fd8ff;border-radius:18px;background:#03101a;box-shadow:0 0 25px #24b9e955;text-align:center;font:700 clamp(34px,8vw,64px)/1 monospace;letter-spacing:3px}.title{font-size:clamp(30px,7vw,56px);margin:8px 0 18px}.shark{width:min(650px,90vw);height:300px;margin:0 auto 12px}.shark svg{width:100%;height:100%;filter:drop-shadow(0 15px 18px #0008)}button{border:0;border-radius:14px;padding:16px 34px;font-size:24px;font-weight:700;cursor:pointer;background:#fff;color:#07131f;box-shadow:0 8px 25px #0005}button:active{transform:scale(.97)}.bye{margin-top:18px;background:#ff4259;color:white}.back{position:absolute;left:0;top:0;background:#ffffff18;color:white;border:1px solid #ffffff44;font-size:17px;padding:10px 16px;display:none}.second{display:none;width:100%;min-height:80vh;align-items:center;justify-content:center;flex-direction:column;text-align:center}.second h1{font-size:clamp(42px,10vw,90px);margin:15px 0}.tung{font-size:clamp(90px,25vw,220px);line-height:1;margin:15px 0;animation:bob .8s infinite alternate ease-in-out}@keyframes bob{to{transform:translateY(-12px) rotate(2deg)}}.show-second .first{display:none}.show-second .second{display:flex}.show-second .back{display:block}
+</style>
+</head>
+<body>
+<div class="app" id="app">
+  <main class="page">
+    <button class="back" id="back">← Назад</button>
+    <section class="first">
+      <div class="timer" id="timer">00:00.00</div>
+      <h1 class="title">Привет, акула!</h1>
+      <div class="shark" aria-label="Акула">
+        <svg viewBox="0 0 700 300" role="img">
+          <path d="M45 177 C125 90 270 83 430 126 L590 93 L532 151 C595 158 644 182 670 212 C571 208 501 197 431 191 C290 241 139 236 45 177Z" fill="#758da0"/>
+          <path d="M350 112 L385 40 L421 121Z" fill="#667d90"/>
+          <path d="M530 151 L585 126 L562 165Z" fill="#667d90"/>
+          <path d="M126 205 L100 255 L174 218Z" fill="#667d90"/>
+          <circle cx="555" cy="164" r="7" fill="#06131d"/>
+          <path d="M525 184 Q575 198 622 204" stroke="#06131d" stroke-width="6" fill="none" stroke-linecap="round"/>
+          <path d="M542 187 L553 199 M560 191 L571 202 M578 195 L589 205" stroke="#fff" stroke-width="5"/>
+          <path d="M100 160 Q210 113 330 139" stroke="#a9bac7" stroke-width="8" fill="none" opacity=".65"/>
+        </svg>
+      </div>
+      <button id="hello">привет</button>
+      <button class="bye" id="bye">пока</button>
+    </section>
+    <section class="second">
+      <div class="tung">🗿</div>
+      <h1>ТУНГ ТУНГ САХУР</h1>
+    </section>
+  </main>
+</div>
+<script>
+const app=document.getElementById('app');
+const timer=document.getElementById('timer');
+const hello=document.getElementById('hello');
+const bye=document.getElementById('bye');
+const back=document.getElementById('back');
+let start=0, running=false, raf=0;
+function format(ms){const m=Math.floor(ms/60000),s=Math.floor(ms/1000)%60,cs=Math.floor(ms%1000/10);return String(m).padStart(2,'0')+':'+String(s).padStart(2,'0')+'.'+String(cs).padStart(2,'0')}
+function tick(now){if(!running)return;timer.textContent=format(now-start);raf=requestAnimationFrame(tick)}
+hello.addEventListener('click',()=>{if(running)return;running=true;start=performance.now();timer.textContent='00:00.00';raf=requestAnimationFrame(tick);hello.textContent='идёт…';hello.disabled=true});
+bye.addEventListener('click',()=>{app.classList.add('show-second');running=false;cancelAnimationFrame(raf)});
+back.addEventListener('click',()=>{app.classList.remove('show-second')});
+</script>
+</body></html>
